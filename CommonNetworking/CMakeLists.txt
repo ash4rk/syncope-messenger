@@ -3,6 +3,8 @@ project(CommonNetworking)
 
 set(CMAKE_CXX_STANDARD 20)
 
+find_package(spdlog REQUIRED)
+
 file(GLOB SOURCES src/* src/*/* src/*/*/*)
 file(GLOB H_FILES "src/*.h")
 file(GLOB CPP_FILES "src/*.cpp")
@@ -15,4 +17,10 @@ target_include_directories(${PROJECT_NAME}
 	PUBLIC
 		$<INSTALL_INTERFACE:include>
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+	PRIVATE
+		spdlog::spdlog
+)
+
+target_link_libraries(${PROJECT_NAME}
+		spdlog::spdlog
 )
