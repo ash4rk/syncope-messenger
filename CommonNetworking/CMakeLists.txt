@@ -4,6 +4,7 @@ project(CommonNetworking)
 set(CMAKE_CXX_STANDARD 20)
 
 find_package(spdlog REQUIRED)
+find_package(Boost 1.77.0 REQUIRED)
 
 file(GLOB SOURCES src/* src/*/* src/*/*/*)
 file(GLOB H_FILES "src/*.h")
@@ -19,8 +20,13 @@ target_include_directories(${PROJECT_NAME}
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 	PRIVATE
 		spdlog::spdlog
+		Boost::boost		
 )
 
 target_link_libraries(${PROJECT_NAME}
-		spdlog::spdlog
+#	PUBLIC
+#		spdlog::spdlog
+	PRIVATE		
+		Boost::boost
+		spdlog::spdlog		
 )

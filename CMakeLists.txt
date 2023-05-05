@@ -17,6 +17,7 @@ include(${CMAKE_BINARY_DIR}/conan.cmake)
 set(CONAN_SYSREQUIRES_MODE "enabled")
 conan_cmake_configure(REQUIRES
         spdlog/1.9.2
+        boost/1.77.0
         GENERATORS cmake cmake_paths cmake_find_package)
 conan_cmake_autodetect(settings)
 conan_cmake_install(PATH_OR_REFERENCE .
