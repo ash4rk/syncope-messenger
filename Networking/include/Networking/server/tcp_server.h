@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Networking/tcp_connection.h"
+#include "Networking/server/tcp_connection.h"
 #include <boost/asio.hpp>
 #include <vector>
 
