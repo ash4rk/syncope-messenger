@@ -10,6 +10,10 @@
 namespace Syncopy {
   using boost::asio::ip::tcp;
   namespace io = boost::asio;
+
+  using MessageHandler = std::function<void(std::string)>;
+  using ErrorHandler = std::function<void()>;
+
   class TCPConnection : public std::enable_shared_from_this<TCPConnection> {
   public:
     using pointer = std::shared_ptr<TCPConnection>;
@@ -19,9 +23,10 @@ namespace Syncopy {
     }
 
     inline const std::string& GetUsername() const { return _username; }
+
     tcp::socket& Socket() { return _socket; }
 
-    void Start( /* ARGUMENTS -- CALLBACKS */ );
+    void Start(MessageHandler&& messageHandler, ErrorHandler&& errorHandler);
     void Post(const std::string& message);
 
 
@@ -41,5 +46,8 @@ namespace Syncopy {
 
     std::queue<std::string> _outgoingMessages;
     io::streambuf _streamBuf {65536};
+
+    MessageHandler _messageHandler;
+    ErrorHandler _errorHandler;
   };
 }

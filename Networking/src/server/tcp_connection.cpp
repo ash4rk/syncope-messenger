@@ -18,8 +18,11 @@ TCPConnection::TCPConnection(io::ip::tcp::socket &&socket)
   _username = name.str();
 }
 
-void TCPConnection::Start() {
-  asyncRead();  
+void TCPConnection::Start(MessageHandler &&messageHandler,
+                          ErrorHandler &&errorHandler) {
+  _messageHandler = std::move(messageHandler);
+  _errorHandler = std::move(errorHandler);
+  asyncRead();
 }
 
 void TCPConnection::Post(const std::string &message) {
@@ -44,7 +47,7 @@ void TCPConnection::onRead(boost::system::error_code ec,
   if (ec) {
     _socket.close(ec);
 
-    // Error handler
+    _errorHandler();
     return;
   }
 
@@ -54,16 +57,16 @@ void TCPConnection::onRead(boost::system::error_code ec,
 
   std::cout << message.str();
 
-  // Message handler
+  _messageHandler(message.str());
   asyncRead();
 }
 
 void TCPConnection::asyncWrite() {
   io::async_write(_socket, io::buffer(_outgoingMessages.front()),
-                       [self = shared_from_this()](boost::system::error_code ec,
-                                                   size_t bytesTransferred) {
-                         self->onWrite(ec, bytesTransferred);
-                       });
+                  [self = shared_from_this()](boost::system::error_code ec,
+                                              size_t bytesTransferred) {
+                    self->onWrite(ec, bytesTransferred);
+                  });
 }
 
 void TCPConnection::onWrite(boost::system::error_code ec,
@@ -71,6 +74,7 @@ void TCPConnection::onWrite(boost::system::error_code ec,
   if (ec) {
     _socket.close(ec);
 
+    _errorHandler();
     return;
   }
   _outgoingMessages.pop();
