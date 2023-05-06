@@ -11,6 +11,9 @@ namespace io = boost::asio;
 enum class IPV { V4, V6 };
 
 class TCPServer {
+  using OnJoinHandler = std::function<void(TCPConnection::pointer)>;
+  using OnLeaveHandler = std::function<void(TCPConnection::pointer)>;
+  using OnClientMessageHandler = std::function<void(std::string)>;
 
 public:
   TCPServer(IPV ipv, int port);
@@ -20,6 +23,11 @@ public:
 
 private:
   void startAccept();
+
+public:
+  OnJoinHandler OnJoin;
+  OnLeaveHandler OnLeave;
+  OnClientMessageHandler OnClientMessage;
 
 private:
   IPV _ipVersion;

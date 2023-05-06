@@ -22,7 +22,9 @@ namespace Syncopy {
   }
 
   void TCPServer::Broadcast(const std::string &message) {
-    
+    for (auto& connection : _connections) {
+      connection->Post(message);
+    }
   }
 
   void TCPServer::startAccept() {
@@ -32,6 +34,9 @@ namespace Syncopy {
     _acceptor.async_accept(
         *_socket, [this](const boost::system::error_code &error) {
           auto connection = TCPConnection::Create(std::move(*_socket));
+          if (OnJoin) {
+            OnJoin(connection);
+          }
 
           _connections.insert(connection);
 

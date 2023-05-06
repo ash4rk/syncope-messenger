@@ -1,36 +1,82 @@
 #include "Networking/server/tcp_connection.h"
+#include <boost/asio/read_until.hpp>
 #include <boost/asio/write.hpp>
 #include <boost/operators.hpp>
 #include <boost/system/detail/error_code.hpp>
 #include <iostream>
+#include <netinet/tcp.h>
+#include <sstream>
 
 namespace Syncopy {
 
-TCPConnection::TCPConnection(io::ip::tcp::socket&& socket) : _socket(std::move(socket)) {}
+TCPConnection::TCPConnection(io::ip::tcp::socket &&socket)
+    : _socket(std::move(socket)) {
+  boost::system::error_code ec;
+  std::stringstream name;
+  name << _socket.remote_endpoint();
+
+  _username = name.str();
+}
 
 void TCPConnection::Start() {
-  auto strongThis = shared_from_this();
+  asyncRead();  
+}
 
-  boost::asio::async_write(_socket, boost::asio::buffer(_message),
-                           [strongThis](const boost::system::error_code &error,
-                                        size_t bytesTranferred) {
-                             if (error) {
-                               std::cout << "Failed to send message!\n";
-                             } else {
-                               std::cout << "Sent " << bytesTranferred
-                                         << " bytes of data!\n";
-                             }
-                           });
+void TCPConnection::Post(const std::string &message) {
+  bool queueIdle = _outgoingMessages.empty();
+  _outgoingMessages.push(message);
 
-  boost::asio::streambuf buffer;
-  _socket.async_receive(
-      buffer.prepare(512),
-      [this](const boost::system::error_code &error, size_t bytesTransferred) {
-        if (error == boost::asio::error::eof) {
-          std::cout << "Client disconnected properly! \n";
-        } else if (error) {
-          std::cout << "Client disconnected in a bad way! \n";
-        }
-      });
+  if (queueIdle) {
+    asyncWrite();
   }
+}
+
+void TCPConnection::asyncRead() {
+  io::async_read_until(_socket, _streamBuf, "\n",
+                       [self = shared_from_this()](boost::system::error_code ec,
+                                                   size_t bytesTransferred) {
+                         self->onRead(ec, bytesTransferred);
+                       });
+}
+
+void TCPConnection::onRead(boost::system::error_code ec,
+                           size_t bytesTransferred) {
+  if (ec) {
+    _socket.close(ec);
+
+    // Error handler
+    return;
+  }
+
+  std::stringstream message;
+  message << _username << ": " << std::istream(&_streamBuf).rdbuf();
+  _streamBuf.consume(bytesTransferred);
+
+  std::cout << message.str();
+
+  // Message handler
+  asyncRead();
+}
+
+void TCPConnection::asyncWrite() {
+  io::async_write(_socket, io::buffer(_outgoingMessages.front()),
+                       [self = shared_from_this()](boost::system::error_code ec,
+                                                   size_t bytesTransferred) {
+                         self->onWrite(ec, bytesTransferred);
+                       });
+}
+
+void TCPConnection::onWrite(boost::system::error_code ec,
+                            size_t bytesTransferred) {
+  if (ec) {
+    _socket.close(ec);
+
+    return;
+  }
+  _outgoingMessages.pop();
+
+  if (!_outgoingMessages.empty()) {
+    asyncWrite();
+  }
+}
 } // namespace Syncopy

@@ -3,6 +3,8 @@
 #include <boost/asio.hpp>
 #include <boost/asio/io_context.hpp>
 #include <memory>
+#include <string>
+#include <queue>
 
 
 namespace Syncopy {
@@ -16,14 +18,28 @@ namespace Syncopy {
       return pointer(new TCPConnection(std::move(socket)));
     }
 
+    inline const std::string& GetUsername() const { return _username; }
     tcp::socket& Socket() { return _socket; }
 
-    void Start();
+    void Start( /* ARGUMENTS -- CALLBACKS */ );
+    void Post(const std::string& message);
+
+
   private:
     explicit TCPConnection(io::ip::tcp::socket&& socket);
 
+    // Wait for a new message from client
+    void asyncRead();
+    void onRead(boost::system::error_code ec, size_t bytesTransferred);
+
+    void asyncWrite();
+    void onWrite(boost::system::error_code ec, size_t bytesTransferred);
+
   private:
     tcp::socket _socket;
-    std::string _message { "Hello, mr. Client!\n" };
+    std::string _username;
+
+    std::queue<std::string> _outgoingMessages;
+    io::streambuf _streamBuf {65536};
   };
 }
