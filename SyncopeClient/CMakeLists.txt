@@ -7,10 +7,10 @@ add_executable(${PROJECT_NAME} main.cpp)
 
 target_include_directories(${PROJECT_NAME}
 	PUBLIC
-		CommonNetworking
+		Networking
 )
 
 target_link_libraries(${PROJECT_NAME}
 	PUBLIC
-		CommonNetworking
+		Networking
 )

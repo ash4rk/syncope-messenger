@@ -1,4 +1,4 @@
-#include "CommonNetworking/tcp_connection.h"
+#include "Networking/tcp_connection.h"
 #include <boost/asio/write.hpp>
 #include <boost/operators.hpp>
 #include <boost/system/detail/error_code.hpp>

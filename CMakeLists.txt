@@ -26,6 +26,6 @@ conan_cmake_install(PATH_OR_REFERENCE .
         SETTINGS ${settings})
 ########################################################################################################################
 
-add_subdirectory(CommonNetworking)
+add_subdirectory(Networking)
 add_subdirectory(SyncopeClient)
 add_subdirectory(SyncopeServer)
