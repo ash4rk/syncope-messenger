@@ -1,6 +1,6 @@
 #include "CommonNetworking/tcp_server.h"
-#include "CommonNetworking/tcp_connection.h"
 #include <iostream>
+#include <vector>
 
 namespace Syncopy {
   using boost::asio::ip::tcp;
@@ -24,6 +24,8 @@ namespace Syncopy {
   void TCPServer::startAccept() {
     // Create a connection
     auto connection = TCPConnection::Create(_ioContext);
+
+    _connections.push_back(connection);
     
     // asynchronously accept the connection
     _acceptor.async_accept(connection->Socket(), [connection, this](const boost::system::error_code& error){
