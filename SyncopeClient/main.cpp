@@ -1,37 +1,39 @@
+#include <exception>
 #include <iostream>
 #include <boost/asio.hpp>
 #include <boost/asio/io_context.hpp>
+#include "Networking/client/tcp_client.h"
+#include <string>
+#include <thread>
 
-using boost::asio::ip::tcp;
+using namespace Syncopy;
 
 int main() {
   std::cout << "Hello, World! I am client!" << std::endl;
-  try{
-    boost::asio::io_context io_context;
+  try {
+  TCPClient client{"localhost", 6060};
 
-    tcp::resolver resolver { io_context };
-    auto endpoints = resolver.resolve("127.0.0.1", "6060");
+  client.OnMessage = [](const std::string &message) { std::cout << message; };
 
-    tcp::socket socket { io_context };
-    boost::asio::connect(socket, endpoints);
+  std::thread t{[&client]() { client.Run(); }};
 
-    while(true) {
-      // Listen for messages
-      std::array<char, 128> buf {};
-      boost::system::error_code error;
 
-      size_t len = socket.read_some(boost::asio::buffer(buf), error);
 
-      if (error == boost::asio::error::eof) {
-        // Clean connection cut off
-        break;
-      } else if (error) {
-        throw boost::system::system_error(error);
-      }
-      std::cout.write(buf.data(), len);
-    }
-  } catch (std::exception& e) {
-    std::cerr << e.what() << std::endl;
+  while (true) {
+    std::string message;
+    getline(std::cin, message);
+
+    if (message == "\\q") { break; }
+    message += "\n";
+
+    client.Post(message);
+  }
+
+  client.Stop();
+  t.join();
+
+  } catch (std::exception &e) {
+  std::cerr << e.what() << std::endl;
   }
   return 0;
 }
