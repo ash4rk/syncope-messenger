@@ -18,6 +18,9 @@ set(CONAN_SYSREQUIRES_MODE "enabled")
 conan_cmake_configure(REQUIRES
         spdlog/1.9.2
         boost/1.77.0
+        glfw/3.3.6
+        glew/2.2.0
+        imgui/1.89.4        
         GENERATORS cmake cmake_paths cmake_find_package)
 conan_cmake_autodetect(settings)
 conan_cmake_install(PATH_OR_REFERENCE .

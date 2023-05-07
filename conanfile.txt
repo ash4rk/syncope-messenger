@@ -1,0 +1,16 @@
+[requires]
+imgui/1.74
+glfw/3.3.6
+glew/2.2.0
+
+[generators]
+cmake_find_package_multi
+
+[options]
+glew:shared=False
+
+[imports]
+./res/bindings, imgui_impl_glfw.cpp -> ../SyncopeClient/bindings
+./res/bindings, imgui_impl_opengl3.cpp -> ../SyncopeClient/bindings
+./res/bindings, imgui_impl_glfw.h -> ../SyncopeClient/bindings
+./res/bindings, imgui_impl_opengl3.h -> ../SyncopeClient/bindings
