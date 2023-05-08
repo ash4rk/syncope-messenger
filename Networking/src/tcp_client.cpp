@@ -1,4 +1,4 @@
-#include "Networking/client/tcp_client.h"
+#include "Networking/tcp_client.h"
 #include <boost/asio/async_result.hpp>
 #include <boost/system/detail/error_code.hpp>
 #include <sstream>

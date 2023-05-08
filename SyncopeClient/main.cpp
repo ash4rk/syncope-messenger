@@ -1,5 +1,5 @@
 #include <imgui.h>
-#include "Networking/client/tcp_client.h"
+#include "Networking/tcp_client.h"
 #include "bindings/imgui_impl_glfw.h"
 #include "bindings/imgui_impl_opengl3.h"
 #include <boost/asio.hpp>

@@ -1,4 +1,4 @@
-#include "Networking/server/tcp_connection.h"
+#include "Networking/tcp_connection.h"
 #include <boost/asio/read_until.hpp>
 #include <boost/asio/write.hpp>
 #include <boost/operators.hpp>

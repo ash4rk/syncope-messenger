@@ -1,7 +1,7 @@
-#include "Networking/server/tcp_connection.h"
+#include "Networking/tcp_connection.h"
 #include <boost/asio.hpp>
 #include <boost/asio/io_context.hpp>
-#include <Networking/server/tcp_server.h>
+#include <Networking/tcp_server.h>
 #include <iostream>
 
 int main() {
