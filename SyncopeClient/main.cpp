@@ -18,28 +18,10 @@
 
 using namespace Syncopy;
 
-int main() {
-  std::string last_message = "";
-  char chatbox[99999] = {0};
-  char input[256] = {0};
-  char message_to_send[256] = {0};
-
-  TCPClient client{"localhost", 6060};
-
-  client.OnMessage = [&last_message](const std::string &message) {
-    std::cout << message;
-    last_message += message;
-  };
-
-  std::thread t{[&client]() { client.Run(); }};
-
-  //  client.Run();
-
-  std::cout << "client runs";
-  // Setup window
-  // glfwSetErrorCallback(glfw_error_callback);
-  if (!glfwInit())
-    return 1;
+GLFWwindow* InitWindow() {
+  if (!glfwInit()) {
+    //    return 1;
+  }
 
     // Decide GL+GLSL versions
 #if __APPLE__
@@ -61,8 +43,9 @@ int main() {
   // Create window with graphics context
   GLFWwindow *window =
       glfwCreateWindow(1280, 720, "Dear ImGui - Conan", NULL, NULL);
-  if (window == NULL)
-    return 1;
+  if (window == NULL){
+    // return 1;
+  }
   glfwMakeContextCurrent(window);
   glfwSwapInterval(1); // Enable vsync
 
@@ -70,7 +53,7 @@ int main() {
 
   if (err) {
     fprintf(stderr, "Failed to initialize OpenGL loader!\n");
-    return 1;
+    //    return 1;
   }
 
   int screen_width, screen_height;
@@ -87,7 +70,11 @@ int main() {
   // Setup Dear ImGui style
   ImGui::StyleColorsDark();
 
-  while (!glfwWindowShouldClose(window) && last_message == ""){
+  return window;
+}
+
+void Loop(GLFWwindow *window, TCPClient &client, std::string& last_message) {
+  while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
     glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -103,7 +90,8 @@ int main() {
     ImGui::Text("%s", last_message.c_str());
 
     if (ImGui::Button("Send Message")) {
-      client.Post("Some message to send");
+
+      client.Post("Some message to send\n");
     }
 
     ImGui::Render();
@@ -121,6 +109,34 @@ int main() {
   ImGui::DestroyContext();
 
   glfwDestroyWindow(window);
+}
+
+
+
+
+int main() {
+  std::string last_message = "";
+  char chatbox[99999] = {0};
+  char input[256] = {0};
+  char message_to_send[256] = {0};
+
+  TCPClient client{"localhost", 6060};
+
+  client.OnMessage = [&last_message](const std::string &message) {
+    std::cout << message;
+    last_message += message;
+  };
+
+  std::thread t{[&client]() { client.Run(); }};
+
+  // Setup window
+  // glfwSetErrorCallback(glfw_error_callback);
+  GLFWwindow *window = InitWindow();
+
+  Loop(window, client, last_message);
+
+
+
   glfwTerminate();
 
   // Terminate client
