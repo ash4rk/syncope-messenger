@@ -13,7 +13,7 @@ namespace Syncopy {
     void TCPClient::Run() {
         io::async_connect(_socket, _endpoints, [this](boost::system::error_code ec, io::ip::tcp::endpoint ep) {
             if (!ec) asyncRead();
-            else std::cout << "Error " << ec << "! " << ec.message() << std::endl;
+            else std::cout << "Run Error " << ec << "! " << ec.message() << std::endl;
         });
 
         _ioContext.run();
@@ -23,16 +23,18 @@ namespace Syncopy {
         boost::system::error_code ec;
         _socket.close(ec);
         if (ec) {
-          std::cout << "Error " << ec << "! " << ec.message() << std::endl;
+          std::cout << "Stop Error " << ec << "! " << ec.message() << std::endl;
         }
     }
 
     void TCPClient::Post(const std::string &message) {
+      std::cout << "Post func call. message is: "<< message << " type is " << typeid(message).name()  << std::endl;
         bool queueIdle = _outgoingMessages.empty();
         _outgoingMessages.push(message);
 
         if (queueIdle) {
-            asyncWrite();
+          std::cout << "!queueIdle" << std::endl;
+          asyncWrite();
         }
     }
 
@@ -44,7 +46,7 @@ namespace Syncopy {
 
     void TCPClient::onRead(boost::system::error_code ec, size_t bytesTransferred) {
         if (ec) {
-            std::cout << "Error " << ec << "! " << ec.message() << std::endl;
+            std::cout << "onRead Error " << ec << "! " << ec.message() << std::endl;
             Stop();
             return;
         }
@@ -63,14 +65,16 @@ namespace Syncopy {
 
     void TCPClient::onWrite(boost::system::error_code ec, size_t bytesTransferred) {
         if (ec) {
-            std::cout << "Error " << ec << "! " << ec.message() << std::endl;
+            std::cout << "onWrite Error " << ec << "! " << ec.message() << std::endl;
             Stop();
             return;
         }
-
+        std::cout << "onWrite without errors. popping message: " << _outgoingMessages.front()  << std::endl;
+        std::cout << "bytesTransferred: "<< bytesTransferred << std::endl;
         _outgoingMessages.pop();
 
         if (!_outgoingMessages.empty()) {
+            std::cout << " _outgoingMessage not empty! " << std::endl;
             asyncWrite();
         }
     }
