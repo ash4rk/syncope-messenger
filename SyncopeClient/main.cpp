@@ -73,7 +73,7 @@ GLFWwindow* InitWindow() {
   return window;
 }
 
-void Loop(GLFWwindow *window, TCPClient &client, std::string& last_message) {
+void Loop(GLFWwindow *window, std::function<void()> onMessgeSend, std::string &last_message) {
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
     glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
@@ -90,8 +90,7 @@ void Loop(GLFWwindow *window, TCPClient &client, std::string& last_message) {
     ImGui::Text("%s", last_message.c_str());
 
     if (ImGui::Button("Send Message")) {
-
-      client.Post("Some message to send\n");
+      onMessgeSend();
     }
 
     ImGui::Render();
@@ -110,9 +109,6 @@ void Loop(GLFWwindow *window, TCPClient &client, std::string& last_message) {
 
   glfwDestroyWindow(window);
 }
-
-
-
 
 int main() {
   std::string last_message = "";
@@ -133,9 +129,7 @@ int main() {
   // glfwSetErrorCallback(glfw_error_callback);
   GLFWwindow *window = InitWindow();
 
-  Loop(window, client, last_message);
-
-
+  Loop(window, [&client](){ client.Post("Hi!\n"); }, last_message);
 
   glfwTerminate();
 
