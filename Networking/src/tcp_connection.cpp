@@ -56,7 +56,7 @@ void TCPConnection::onRead(boost::system::error_code ec,
   _streamBuf.consume(bytesTransferred);
 
   std::cout << message.str();
-
+  
   _messageHandler(message.str());
   asyncRead();
 }

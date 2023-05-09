@@ -81,13 +81,15 @@ GLFWwindow *Window::Init() {
             ImVec2(760, 40),
             ImGuiInputTextFlags_EnterReturnsTrue |
             ImGuiInputTextFlags_CtrlEnterForNewLine)) {
-      strcat(chatInput, "\n");
-      onMessgeSend(chatInput);
+      char messageToSend[256] = "/SEND/";
+      strcat(messageToSend, chatInput);
+      strcat(messageToSend, "\n");
+      onMessgeSend(messageToSend);
       memset(chatInput, 0, sizeof(chatInput));
       ImGui::SetKeyboardFocusHere(0);
     }
-      if (ImGui::Button("Send Message")) {
-        onMessgeSend("Message from button!\n");
+      if (ImGui::Button("AUTH BUTTON")) {
+        onMessgeSend("/AUTH/admin:admin:\n");
       }
 
       ImGui::Render();

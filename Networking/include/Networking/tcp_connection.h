@@ -23,6 +23,8 @@ namespace Syncopy {
     }
 
     inline const std::string& GetUsername() const { return _username; }
+    inline const bool& IsAuth() const { return _is_authorized; }
+    inline void SetAuth(const bool& value) { _is_authorized = value; }
 
     tcp::socket& Socket() { return _socket; }
 
@@ -43,6 +45,7 @@ namespace Syncopy {
   private:
     tcp::socket _socket;
     std::string _username;
+    bool _is_authorized = false;
 
     std::queue<std::string> _outgoingMessages;
     io::streambuf _streamBuf {65536};

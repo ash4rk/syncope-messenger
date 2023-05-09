@@ -1,5 +1,6 @@
 #include "Networking/tcp_server.h"
 #include <iostream>
+#include <unordered_set>
 #include <vector>
 
 namespace Syncopy {
@@ -26,6 +27,8 @@ void TCPServer::Broadcast(const std::string &message) {
   }
 }
 
+void TCPServer::AuthorizeClient(std::string &login, std::string &pass) {}
+
 void TCPServer::startAccept() {
   _socket.emplace(_ioContext);
 
@@ -41,9 +44,14 @@ void TCPServer::startAccept() {
 
         if (!error) {
           connection->Start(
-              [this](const std::string &message) {
+              [this, connection](const std::string &message) {
+                // if (_authorized_connections.find(connection) ==
+                // _authorized_connections.end())
+                //   {
+                //     AuthorizeClient(std::string &login, std::string &pass)
+                //   }
                 if (OnClientMessage)
-                  OnClientMessage(message);
+                  OnClientMessage(message, connection);
               },
               [&, weak = std::weak_ptr(connection)] {
                 if (auto shared = weak.lock();
@@ -51,8 +59,7 @@ void TCPServer::startAccept() {
                   if (OnLeave)
                     OnLeave(shared);
                 }
-              }
-          );
+              });
         }
 
         startAccept();
