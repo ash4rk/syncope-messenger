@@ -1,10 +1,10 @@
 #pragma once
 
-#include <functional>
 #include <imgui.h>
-#include <string>
 #include "bindings/imgui_impl_glfw.h"
 #include "bindings/imgui_impl_opengl3.h"
+#include <functional>
+#include <string>
 
 // Initialize with glewInit()
 #include <GL/glew.h>
@@ -18,11 +18,14 @@ class Window {
 public:
   Window();
   GLFWwindow *Init();
-  void Loop(std::function<void()> onMessgeSend, std::string &last_message);
+  void Loop(std::function<void()> onMessgeSend);
+  void AddMessage(const std::string &message);
 
 private:
 public:
 private:
   GLFWwindow *_window;
+  std::string _messages = "";
 };
+
 } // namespace Syncopy

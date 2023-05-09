@@ -2,14 +2,14 @@
 
 namespace Syncopy {
 
-  Window::Window() {}
+Window::Window() {};
 
-  GLFWwindow* Window::Init() {
+GLFWwindow *Window::Init() {
   if (!glfwInit()) {
     //    return 1;
   }
 
-    // Decide GL+GLSL versions
+  // Decide GL+GLSL versions
 #if __APPLE__
   // GL 3.2 + GLSL 150
   const char *glsl_version = "#version 150";
@@ -27,9 +27,8 @@ namespace Syncopy {
 #endif
 
   // Create _window with graphics context
-  _window =
-      glfwCreateWindow(1280, 720, "Dear ImGui - Conan", NULL, NULL);
-  if (_window == NULL){
+  _window = glfwCreateWindow(1280, 720, "Syncope Messenger", NULL, NULL);
+  if (_window == NULL) {
     // return 1;
   }
   glfwMakeContextCurrent(_window);
@@ -59,7 +58,7 @@ namespace Syncopy {
   return _window;
 }
 
-  void Window::Loop(std::function<void()> onMessgeSend, std::string &last_message) {
+void Window::Loop(std::function<void()> onMessgeSend) {
   while (!glfwWindowShouldClose(_window)) {
     glfwPollEvents();
     glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
@@ -73,7 +72,7 @@ namespace Syncopy {
 
     ImGui::Text("Chat here:");
     ImGui::SameLine();
-    ImGui::Text("%s", last_message.c_str());
+    ImGui::Text("%s", _messages.c_str());
 
     if (ImGui::Button("Send Message")) {
       onMessgeSend();
@@ -94,6 +93,9 @@ namespace Syncopy {
   ImGui::DestroyContext();
 
   glfwDestroyWindow(_window);
+  glfwTerminate();
 }
 
-}
+void Window::AddMessage(const std::string &message) { _messages += message; }
+
+} // namespace Syncopy

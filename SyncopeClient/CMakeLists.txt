@@ -9,6 +9,8 @@ find_package(glew CONFIG)
 
 add_executable(${PROJECT_NAME} 
 		main.cpp
+		window.cpp
+		window.h
                 bindings/imgui_impl_glfw.cpp
                 bindings/imgui_impl_opengl3.cpp
                 bindings/imgui_impl_glfw.h
