@@ -1,6 +1,7 @@
 #include "window.h"
+#include "Networking/chat_protocol.h"
 
-#include "boost/beast/core/detail/base64.hpp"
+
 
 namespace Syncopy {
 
@@ -83,14 +84,8 @@ GLFWwindow *Window::Init() {
             ImVec2(760, 40),
             ImGuiInputTextFlags_EnterReturnsTrue |
             ImGuiInputTextFlags_CtrlEnterForNewLine)) {
-      char messageToSend[256] = "/SEND/";
-      std::string str(chatInput);
-      std::string base64_encoded;
-      base64_encoded.resize(boost::beast::detail::base64::encoded_size(str.size()));
-      boost::beast::detail::base64::encode(&base64_encoded[0], str.c_str(), str.size());
-      strcat(messageToSend, base64_encoded.c_str());
-      strcat(messageToSend, "\n");
-      onMessgeSend(messageToSend);
+
+      onMessgeSend(SendSay(std::string(chatInput)));
       memset(chatInput, 0, sizeof(chatInput));
       ImGui::SetKeyboardFocusHere(0);
     }
