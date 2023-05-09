@@ -6,6 +6,7 @@
 #include <iostream>
 #include <netinet/tcp.h>
 #include <sstream>
+#include <string>
 
 namespace Syncopy {
 
@@ -51,13 +52,16 @@ void TCPConnection::onRead(boost::system::error_code ec,
     return;
   }
 
-  std::stringstream message;
-  message << _username << ": " << std::istream(&_streamBuf).rdbuf();
+
+  // Extract up to the first delimiter.
+  std::string message{
+    boost::asio::buffers_begin(_streamBuf.data()), boost::asio::buffers_begin(_streamBuf.data()) + bytesTransferred - delimeter.size()};
+  // Consume through the first delimiter.
   _streamBuf.consume(bytesTransferred);
 
-  std::cout << message.str();
-  
-  _messageHandler(message.str());
+  std::cout << "OnRead() get message: " << message << std::endl;
+
+  _messageHandler(message);
   asyncRead();
 }
 

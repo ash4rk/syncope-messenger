@@ -6,8 +6,9 @@
 #include <string>
 #include <queue>
 
-
 namespace Syncopy {
+  static const std::string delimeter = "\n";
+
   using boost::asio::ip::tcp;
   namespace io = boost::asio;
 
