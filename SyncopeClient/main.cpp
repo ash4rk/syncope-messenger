@@ -33,7 +33,7 @@ int main() {
   std::thread t{[&client]() { client.Run(); }};
 
    window.Init();
-   window.Loop([&client]() { client.Post("Hi!\n"); });
+   window.Loop([&client](const std::string &message) { client.Post(message); });
 
   // Terminate client
   client.Stop();

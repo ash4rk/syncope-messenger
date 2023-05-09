@@ -18,7 +18,7 @@ class Window {
 public:
   Window();
   GLFWwindow *Init();
-  void Loop(std::function<void()> onMessgeSend);
+  void Loop(std::function<void(const std::string& message)> onMessgeSend);
   void AddMessage(const std::string &message);
 
 private:

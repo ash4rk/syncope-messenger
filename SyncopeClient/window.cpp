@@ -58,7 +58,9 @@ GLFWwindow *Window::Init() {
   return _window;
 }
 
-void Window::Loop(std::function<void()> onMessgeSend) {
+  void Window::Loop(std::function<void(const std::string& message)> onMessgeSend) {
+  char chatInput[256] = {0};
+
   while (!glfwWindowShouldClose(_window)) {
     glfwPollEvents();
     glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
@@ -74,18 +76,28 @@ void Window::Loop(std::function<void()> onMessgeSend) {
     ImGui::SameLine();
     ImGui::Text("%s", _messages.c_str());
 
-    if (ImGui::Button("Send Message")) {
-      onMessgeSend();
+    if (ImGui::InputTextMultiline(
+            "###text", chatInput, IM_ARRAYSIZE(chatInput),
+            ImVec2(760, 40),
+            ImGuiInputTextFlags_EnterReturnsTrue |
+            ImGuiInputTextFlags_CtrlEnterForNewLine)) {
+      strcat(chatInput, "\n");
+      onMessgeSend(chatInput);
+      memset(chatInput, 0, sizeof(chatInput));
+      ImGui::SetKeyboardFocusHere(0);
     }
+      if (ImGui::Button("Send Message")) {
+        onMessgeSend("Message from button!\n");
+      }
 
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+      ImGui::Render();
+      ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-    int display_w, display_h;
-    glfwGetFramebufferSize(_window, &display_w, &display_h);
-    glViewport(0, 0, display_w, display_h);
-    glfwSwapBuffers(_window);
-  }
+      int display_w, display_h;
+      glfwGetFramebufferSize(_window, &display_w, &display_h);
+      glViewport(0, 0, display_w, display_h);
+      glfwSwapBuffers(_window);
+    }
 
   // Cleanup
   ImGui_ImplOpenGL3_Shutdown();
