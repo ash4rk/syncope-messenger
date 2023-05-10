@@ -60,7 +60,7 @@ GLFWwindow *Window::Init() {
 }
 
 void Window::Loop(
-    std::function<void(const std::string &message)> onMessgeSend) {
+    std::function<void(const std::string &message)> onMessageSend) {
   char chatInput[256] = {0};
 
   while (!glfwWindowShouldClose(_window)) {
@@ -75,7 +75,7 @@ void Window::Loop(
     ImGui::ShowDemoWindow();
 
     if (!_isLoggedIn) {
-      LogInWindow(onMessgeSend);
+      LogInWindow(onMessageSend);
     } else {
       ImGui::Text("Chat here:");
       ImGui::SameLine();
@@ -85,7 +85,7 @@ void Window::Loop(
               ImGuiInputTextFlags_EnterReturnsTrue |
                   ImGuiInputTextFlags_CtrlEnterForNewLine)) {
 
-        onMessgeSend(SendSay(std::string(chatInput)));
+        onMessageSend(SendSay(std::string(chatInput)));
         memset(chatInput, 0, sizeof(chatInput));
         ImGui::SetKeyboardFocusHere(0);
       }
