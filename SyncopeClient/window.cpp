@@ -8,7 +8,7 @@ Window::Window(){};
 
 GLFWwindow *Window::Init() {
   if (!glfwInit()) {
-    //    return 1;
+    throw std::invalid_argument("Failed to initialize GLFW library");
   }
 
   // Decide GL+GLSL versions
@@ -31,7 +31,7 @@ GLFWwindow *Window::Init() {
   // Create _window with graphics context
   _window = glfwCreateWindow(1280, 720, "Syncope Messenger", NULL, NULL);
   if (_window == NULL) {
-    // return 1;
+    throw std::invalid_argument("_window not initialized");
   }
   glfwMakeContextCurrent(_window);
   glfwSwapInterval(1); // Enable vsync
@@ -39,8 +39,7 @@ GLFWwindow *Window::Init() {
   bool err = glewInit() != GLEW_OK;
 
   if (err) {
-    fprintf(stderr, "Failed to initialize OpenGL loader!\n");
-    //    return 1;
+    throw std::invalid_argument("Failed to initialize OpenGL loader");
   }
 
   int screen_width, screen_height;
