@@ -11,7 +11,7 @@ const std::string SendAuth(const std::string &login,
   return "AUTH " + login + ":" + password + "\n";
 }
 
-std::string SendSay(std::string body) {
+const std::string SendSay(std::string body) {
   // Encode string to base64
   std::string base64EncodedBody;
   base64EncodedBody.resize(
@@ -21,7 +21,7 @@ std::string SendSay(std::string body) {
   return "SAY " + base64EncodedBody + "\n";
 }
 
-Command GetCommandName(std::string message) {
+const Command GetCommandName(const std::string message) {
   std::istringstream iss(message);
   std::string command;
   getline(iss, command, ' ');
@@ -29,7 +29,7 @@ Command GetCommandName(std::string message) {
   return _hashit(command);
 }
 
-AuthMessage ParseAuth(std::string message) {
+const AuthMessage ParseAuth(const std::string message) {
   AuthMessage credentials;
   std::istringstream iss(message);
   std::string command;
@@ -45,7 +45,7 @@ AuthMessage ParseAuth(std::string message) {
   return credentials;
 }
 
-SayMessage ParseSay(std::string message) {
+const SayMessage ParseSay(const std::string message) {
   std::istringstream iss(message);
   std::string command;
   std::string encodedBody;

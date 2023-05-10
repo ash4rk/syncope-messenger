@@ -20,10 +20,10 @@ struct SayMessage {
 };
 
   const std::string SendAuth(const std::string& login, const std::string& password);
-  std::string SendSay(std::string body);
-  Command GetCommandName(std::string message);
-  AuthMessage ParseAuth(std::string message);
-  SayMessage ParseSay(std::string message);
+  const std::string SendSay(std::string body);
+  const Command GetCommandName(const std::string message);
+  const AuthMessage ParseAuth(const std::string message);
+  const SayMessage ParseSay(const std::string message);
 
   Command _hashit(std::string const &inString);
 
