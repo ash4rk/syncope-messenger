@@ -20,7 +20,6 @@
 using namespace Syncopy;
 
 int main() {
-  //Window window = Window();
   Window window = Window();
 
   TCPClient client{"localhost", 6060};
