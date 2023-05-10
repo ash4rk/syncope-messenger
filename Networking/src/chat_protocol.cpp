@@ -7,6 +7,7 @@
 namespace Syncopy {
 
 std::string SendAuth(std::string login, std::string password) { return ""; }
+
 std::string SendSay(std::string body) {
   std::string base64EncodedBody;
   base64EncodedBody.resize(
@@ -15,6 +16,7 @@ std::string SendSay(std::string body) {
                                        body.size());
   return "SAY " + base64EncodedBody + "\n";
 }
+
 Command GetCommandName(std::string message) {
   std::istringstream iss(message);
   std::string command;
@@ -22,12 +24,14 @@ Command GetCommandName(std::string message) {
   std::cout << "Command is: " << command << std::endl;
   return _hashit(command);
 }
+
 AuthMessage ParseAuth(std::string message) {
   AuthMessage credentials;
   std::istringstream iss(message);
   std::string command;
   std::string login;
   std::string password;
+  getline(iss, command, ' ');
   getline(iss, login, ':');
   getline(iss, password, '\n');
   std::cout << "Login is: " << login << std::endl;
@@ -35,7 +39,8 @@ AuthMessage ParseAuth(std::string message) {
   credentials.login = login;
   credentials.password = password;
   return credentials;
-    }
+}
+
 SayMessage ParseSay(std::string message) { return SayMessage(); }
 
 Command _hashit(const std::string &inString) {
