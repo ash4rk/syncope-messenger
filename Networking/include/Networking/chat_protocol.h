@@ -30,6 +30,8 @@ struct ShoutMessage {
   const Command GetCommandName(const std::string message);
   const AuthMessage ParseAuth(const std::string message);
   const SayMessage ParseSay(const std::string message);
+  const ShoutMessage ParseShout(const std::string message);
+
 
   Command _hashit(std::string const &inString);
 

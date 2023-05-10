@@ -1,4 +1,5 @@
 #include <imgui.h>
+#include "Networking/chat_protocol.h"
 #include "Networking/tcp_client.h"
 #include "bindings/imgui_impl_glfw.h"
 #include "bindings/imgui_impl_opengl3.h"
@@ -25,8 +26,9 @@ int main() {
   TCPClient client{"localhost", 6060};
 
   client.OnMessage = [&window](const std::string &message) {
-    std::cout << message;
-    window.AddMessage(message);
+    std::cout << "OnMessage" << message;
+    ShoutMessage shoutMessage = ParseShout(message);
+    window.AddMessage(shoutMessage.username + ": " + shoutMessage.body + "\n");
   };
 
   std::thread t{[&client]() { client.Run(); }};
