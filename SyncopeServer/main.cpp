@@ -45,13 +45,11 @@ int main() {
         std::cout << "Has not AUTH!" << std::endl;
         return;
       }
-      std::string messageBody;
-      getline(iss, messageBody);
-
-      std::cout << "Trying to broadcast message: \"" << messageBody << "\"" << std::endl;
+      Syncopy::SayMessage sayMessage = Syncopy::ParseSay(message);
+      std::cout << "Trying to broadcast message: \"" << sayMessage.body << "\"" << std::endl;
 
       // Send message to clients
-      server.Broadcast(messageBody + "\n");
+      //      server.Broadcast(messageBody + "\n");
       break;
     }
     case Syncopy::Command::BAD_PATH: {

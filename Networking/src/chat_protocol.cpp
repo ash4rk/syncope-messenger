@@ -6,8 +6,10 @@
 
 namespace Syncopy {
 
-const std::string SendAuth(const std::string& login, const std::string& password) {
-  return "AUTH " + login + ":" + password + "\n"; }
+const std::string SendAuth(const std::string &login,
+                           const std::string &password) {
+  return "AUTH " + login + ":" + password + "\n";
+}
 
 std::string SendSay(std::string body) {
   std::string base64EncodedBody;
@@ -42,7 +44,29 @@ AuthMessage ParseAuth(std::string message) {
   return credentials;
 }
 
-SayMessage ParseSay(std::string message) { return SayMessage(); }
+SayMessage ParseSay(std::string message) {
+  std::istringstream iss(message);
+  std::string command;
+  std::string encodedBody;
+  getline(iss, command, ' ');
+  getline(iss, encodedBody, ' ');
+  // Decode the base64-encoded string
+  std::string decodedString;
+  decodedString.resize(
+      boost::beast::detail::base64::decoded_size(encodedBody.size()));
+  auto decoded_size = boost::beast::detail::base64::decode(
+      &decodedString[0], encodedBody.c_str(), encodedBody.size());
+
+  // Resize the decoded string to its actual size
+  //  decoded_string.resize(decoded_size);
+
+  // Print the decoded string
+  std::cout << "decoded string!:" << decodedString << std::endl;
+  SayMessage sayMessage;
+  sayMessage.body = decodedString;
+  return sayMessage;
+}
+
 
 Command _hashit(const std::string &inString) {
   if (inString == "AUTH")
