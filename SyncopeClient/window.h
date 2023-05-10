@@ -18,11 +18,12 @@ class Window {
 public:
   Window();
   GLFWwindow *Init();
-  void Loop(std::function<void(const std::string& message)> onMessgeSend);
-  void LogInWindow(std::function <void(const std::string &login)> onLogIn);
+  void Loop(std::function<void(const std::string &message)> onMessageSend);
   void AddMessage(const std::string &message);
 
 private:
+  void logInWindow(std::function<void(const std::string &login)> onLogIn);
+
 public:
 private:
   GLFWwindow *_window;

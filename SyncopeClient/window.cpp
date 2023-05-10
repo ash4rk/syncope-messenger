@@ -75,7 +75,7 @@ void Window::Loop(
     ImGui::ShowDemoWindow();
 
     if (!_isLoggedIn) {
-      LogInWindow(onMessageSend);
+      logInWindow(onMessageSend);
     } else {
       ImGui::Text("Chat here:");
       ImGui::SameLine();
@@ -109,9 +109,10 @@ void Window::Loop(
   glfwTerminate();
 }
 
-void Window::LogInWindow(
-    std::function<void(const std::string &password)>
-        onLogIn) {
+void Window::AddMessage(const std::string &message) { _messages += message; }
+
+void Window::logInWindow(
+    std::function<void(const std::string &password)> onLogIn) {
   ImGui::Text("Login:");
   ImGui::SameLine();
   ImGui::InputText("##login", _login, 32);
@@ -125,7 +126,5 @@ void Window::LogInWindow(
     _isLoggedIn = true;
   }
 }
-
-void Window::AddMessage(const std::string &message) { _messages += message; }
 
 } // namespace Syncopy
