@@ -1,19 +1,10 @@
+#include "Networking/chat_protocol.h"
 #include "Networking/tcp_connection.h"
 #include <Networking/tcp_server.h>
 #include <boost/asio.hpp>
 #include <boost/asio/io_context.hpp>
 #include <iostream>
 #include <ostream>
-
-enum string_code { AUTH, SEND, BAD_PATH };
-
-string_code hashit(std::string const &inString) {
-  if (inString == "AUTH")
-    return AUTH;
-  if (inString == "SEND")
-    return SEND;
-  return BAD_PATH;
-}
 
 int main() {
   std::cout << "Hello, World! I am server!" << std::endl;
@@ -34,15 +25,9 @@ int main() {
                                      Syncopy::TCPConnection::pointer client) {
     // Parse the message
     std::istringstream iss(message);
-    std::string route;
-    std::string username;
-    getline(iss, username, '/');
-    std::cout << "From username: " << username << std::endl;
-    getline(iss, route, '/');
-    std::cout << "Route is: " << route << std::endl;
 
-    switch (hashit(route)) {
-    case AUTH: {
+    switch (Syncopy::GetCommandName(message)) {
+    case Syncopy::Command::AUTH: {
       std::cout << "Authorization attempt: " << std::endl;
       std::string login;
       std::string password;
@@ -58,7 +43,7 @@ int main() {
       }
       break;
     }
-    case SEND: {
+    case Syncopy::Command::SAY: {
       // Check if Authorized if not return
       if (!client->IsAuth()) {
         std::cout << "Has not AUTH!" << std::endl;
@@ -73,7 +58,7 @@ int main() {
       server.Broadcast(messageBody + "\n");
       break;
     }
-    case BAD_PATH: {
+    case Syncopy::Command::BAD_PATH: {
       std::cout << "BAD ROUTE" << std::endl;
       break;
     }

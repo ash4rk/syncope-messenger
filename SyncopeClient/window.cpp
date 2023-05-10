@@ -90,7 +90,7 @@ GLFWwindow *Window::Init() {
       ImGui::SetKeyboardFocusHere(0);
     }
       if (ImGui::Button("AUTH BUTTON")) {
-        onMessgeSend("/AUTH/admin:admin:\n");
+        onMessgeSend("AUTH admin:admin:\n");
       }
 
       ImGui::Render();

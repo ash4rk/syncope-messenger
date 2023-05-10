@@ -8,6 +8,8 @@
 
 namespace Syncopy {
 
+enum Command { AUTH, SAY, BAD_PATH };
+
 struct AuthMessage {
   std::string login;
   std::string password;
@@ -19,8 +21,10 @@ struct SayMessage {
 
   std::string SendAuth(std::string login, std::string password);
   std::string SendSay(std::string body);
-  std::string GetCommandName(std::string message);
+  Command GetCommandName(std::string message);
   AuthMessage ParseAuth(std::string message);
   SayMessage ParseSay(std::string message);
+
+  Command _hashit(std::string const &inString);
 
 } // namespace Syncopy
