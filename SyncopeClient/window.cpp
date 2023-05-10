@@ -87,7 +87,7 @@ void Window::Loop(
 
         onMessageSend(SendSay(std::string(chatInput)));
         memset(chatInput, 0, sizeof(chatInput));
-        ImGui::SetKeyboardFocusHere(0);
+        ImGui::SetKeyboardFocusHere(-1);
       }
     }
 
