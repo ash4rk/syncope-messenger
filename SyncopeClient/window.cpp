@@ -1,11 +1,9 @@
 #include "window.h"
 #include "Networking/chat_protocol.h"
 
-
-
 namespace Syncopy {
 
-Window::Window() {};
+Window::Window(){};
 
 GLFWwindow *Window::Init() {
   if (!glfwInit()) {
@@ -61,7 +59,8 @@ GLFWwindow *Window::Init() {
   return _window;
 }
 
-  void Window::Loop(std::function<void(const std::string& message)> onMessgeSend) {
+void Window::Loop(
+    std::function<void(const std::string &message)> onMessgeSend) {
   char chatInput[256] = {0};
 
   while (!glfwWindowShouldClose(_window)) {
@@ -75,32 +74,31 @@ GLFWwindow *Window::Init() {
     ImGui::NewFrame();
     ImGui::ShowDemoWindow();
 
-    ImGui::Text("Chat here:");
-    ImGui::SameLine();
-    ImGui::Text("%s", _messages.c_str());
+    if (!_isLoggedIn) {
+      LogInWindow(onMessgeSend);
+    } else {
+      ImGui::Text("Chat here:");
+      ImGui::SameLine();
+      ImGui::Text("%s", _messages.c_str());
+      if (ImGui::InputTextMultiline(
+              "###text", chatInput, IM_ARRAYSIZE(chatInput), ImVec2(760, 40),
+              ImGuiInputTextFlags_EnterReturnsTrue |
+                  ImGuiInputTextFlags_CtrlEnterForNewLine)) {
 
-    if (ImGui::InputTextMultiline(
-            "###text", chatInput, IM_ARRAYSIZE(chatInput),
-            ImVec2(760, 40),
-            ImGuiInputTextFlags_EnterReturnsTrue |
-            ImGuiInputTextFlags_CtrlEnterForNewLine)) {
-
-      onMessgeSend(SendSay(std::string(chatInput)));
-      memset(chatInput, 0, sizeof(chatInput));
-      ImGui::SetKeyboardFocusHere(0);
-    }
-      if (ImGui::Button("AUTH BUTTON")) {
-        onMessgeSend("AUTH admin:admin\n");
+        onMessgeSend(SendSay(std::string(chatInput)));
+        memset(chatInput, 0, sizeof(chatInput));
+        ImGui::SetKeyboardFocusHere(0);
       }
-
-      ImGui::Render();
-      ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-      int display_w, display_h;
-      glfwGetFramebufferSize(_window, &display_w, &display_h);
-      glViewport(0, 0, display_w, display_h);
-      glfwSwapBuffers(_window);
     }
+
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+    int display_w, display_h;
+    glfwGetFramebufferSize(_window, &display_w, &display_h);
+    glViewport(0, 0, display_w, display_h);
+    glfwSwapBuffers(_window);
+  }
 
   // Cleanup
   ImGui_ImplOpenGL3_Shutdown();
@@ -109,6 +107,23 @@ GLFWwindow *Window::Init() {
 
   glfwDestroyWindow(_window);
   glfwTerminate();
+}
+
+void Window::LogInWindow(
+    std::function<void(const std::string &password)>
+        onLogIn) {
+  ImGui::Text("Login:");
+  ImGui::SameLine();
+  ImGui::InputText("##login", _login, 32);
+  ImGui::Text("Password:");
+  ImGui::SameLine();
+  ImGui::InputText("##password", _password, 32,
+                   ImGuiInputTextFlags_Password |
+                       ImGuiInputTextFlags_CharsNoBlank);
+  if (ImGui::Button("Login")) {
+    onLogIn(SendAuth(_login, _password));
+    _isLoggedIn = true;
+  }
 }
 
 void Window::AddMessage(const std::string &message) { _messages += message; }

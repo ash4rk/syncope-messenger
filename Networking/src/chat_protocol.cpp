@@ -6,7 +6,8 @@
 
 namespace Syncopy {
 
-std::string SendAuth(std::string login, std::string password) { return ""; }
+const std::string SendAuth(const std::string& login, const std::string& password) {
+  return "AUTH " + login + ":" + password + "\n"; }
 
 std::string SendSay(std::string body) {
   std::string base64EncodedBody;

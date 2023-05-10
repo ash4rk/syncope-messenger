@@ -19,7 +19,7 @@ struct SayMessage {
   std::string body;
 };
 
-  std::string SendAuth(std::string login, std::string password);
+  const std::string SendAuth(const std::string& login, const std::string& password);
   std::string SendSay(std::string body);
   Command GetCommandName(std::string message);
   AuthMessage ParseAuth(std::string message);
