@@ -16,9 +16,11 @@
 ## Сборка и компиляция:
 ```
 mkdir build
-conan install -s build_type=Release
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-cmake --build build
+cd build
+conan install .. -s build_type=Release
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+cmake --build .
+cd ..
 ```
 
 ## Запуск:
