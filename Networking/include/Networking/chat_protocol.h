@@ -19,8 +19,14 @@ struct SayMessage {
   std::string body;
 };
 
+struct ShoutMessage {
+  std::string username;
+  std::string body;
+};
+
   const std::string SendAuth(const std::string& login, const std::string& password);
   const std::string SendSay(std::string body);
+  const std::string SendShout(const std::string& username, std::string body);
   const Command GetCommandName(const std::string message);
   const AuthMessage ParseAuth(const std::string message);
   const SayMessage ParseSay(const std::string message);

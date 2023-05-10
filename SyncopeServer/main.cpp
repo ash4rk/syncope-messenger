@@ -49,7 +49,8 @@ int main() {
       std::cout << "Trying to broadcast message: \"" << sayMessage.body << "\"" << std::endl;
 
       // Send message to clients
-      //      server.Broadcast(messageBody + "\n");
+      server.Broadcast(
+          Syncopy::SendShout(client->GetUsername(), sayMessage.body));
       break;
     }
     case Syncopy::Command::BAD_PATH: {

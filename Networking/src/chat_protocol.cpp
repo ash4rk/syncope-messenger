@@ -21,6 +21,16 @@ const std::string SendSay(std::string body) {
   return "SAY " + base64EncodedBody + "\n";
 }
 
+const std::string SendShout(const std::string& username, std::string body) {
+  // Encode string to base64
+  std::string base64EncodedBody;
+  base64EncodedBody.resize(
+      boost::beast::detail::base64::encoded_size(body.size()));
+  boost::beast::detail::base64::encode(&base64EncodedBody[0], body.c_str(),
+                                       body.size());
+  return "SHOUT " + username + ": " + base64EncodedBody + "\n";
+}
+
 const Command GetCommandName(const std::string message) {
   std::istringstream iss(message);
   std::string command;
