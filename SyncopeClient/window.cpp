@@ -71,7 +71,6 @@ void Window::Loop(
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-    ImGui::ShowDemoWindow();
 
     // Build New Windows Here
     if (!isLoggedIn) {
