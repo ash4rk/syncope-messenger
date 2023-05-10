@@ -104,7 +104,7 @@ void Window::AddMessage(const std::string &message) {
   _messages += message;
   std::cout << "_messages " << _messages << "\n";
   std::cout << "_message.c_str() " << _messages.c_str() << "\n";
-  }
+}
 
 void Window::logInWindow(
     std::function<void(const std::string &password)> onLogIn) {
@@ -130,7 +130,8 @@ void Window::chatWindow(
   if (ImGui::InputTextMultiline("###text", _chatInput, IM_ARRAYSIZE(_chatInput),
                                 ImVec2(760, 40),
                                 ImGuiInputTextFlags_EnterReturnsTrue |
-                                ImGuiInputTextFlags_CtrlEnterForNewLine)) {
+                                    ImGuiInputTextFlags_CtrlEnterForNewLine) &&
+      strlen(_chatInput) != 0) {
 
     onSendSay(SendSay(std::string(_chatInput)));
     memset(_chatInput, 0, sizeof(_chatInput));
