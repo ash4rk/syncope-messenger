@@ -12,6 +12,7 @@ const std::string SendAuth(const std::string &login,
 }
 
 std::string SendSay(std::string body) {
+  // Encode string to base64
   std::string base64EncodedBody;
   base64EncodedBody.resize(
       boost::beast::detail::base64::encoded_size(body.size()));
@@ -56,17 +57,10 @@ SayMessage ParseSay(std::string message) {
       boost::beast::detail::base64::decoded_size(encodedBody.size()));
   auto decoded_size = boost::beast::detail::base64::decode(
       &decodedString[0], encodedBody.c_str(), encodedBody.size());
-
-  // Resize the decoded string to its actual size
-  //  decoded_string.resize(decoded_size);
-
-  // Print the decoded string
-  std::cout << "decoded string!:" << decodedString << std::endl;
   SayMessage sayMessage;
   sayMessage.body = decodedString;
   return sayMessage;
 }
-
 
 Command _hashit(const std::string &inString) {
   if (inString == "AUTH")
