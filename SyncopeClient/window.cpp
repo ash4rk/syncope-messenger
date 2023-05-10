@@ -60,35 +60,25 @@ GLFWwindow *Window::Init() {
 }
 
 void Window::Loop(
-    std::function<void(const std::string &message)> onMessageSend) {
-  char chatInput[256] = {0};
+    std::function<void(const std::string &message)> onPostMessage) {
 
   while (!glfwWindowShouldClose(_window)) {
     glfwPollEvents();
     glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // feed inputs to dear imgui, start new frame
+    // Feed inputs to dear imgui, start new frame
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
     ImGui::ShowDemoWindow();
 
+    // Build New Windows Here
     if (!_isLoggedIn) {
-      logInWindow(onMessageSend);
-    } else {
-      ImGui::Text("Chat here:");
-      ImGui::SameLine();
-      ImGui::Text("%s", _messages.c_str());
-      if (ImGui::InputTextMultiline(
-              "###text", chatInput, IM_ARRAYSIZE(chatInput), ImVec2(760, 40),
-              ImGuiInputTextFlags_EnterReturnsTrue |
-                  ImGuiInputTextFlags_CtrlEnterForNewLine)) {
+      logInWindow(onPostMessage);
 
-        onMessageSend(SendSay(std::string(chatInput)));
-        memset(chatInput, 0, sizeof(chatInput));
-        ImGui::SetKeyboardFocusHere(-1);
-      }
+    } else {
+      chatWindow(onPostMessage);
     }
 
     ImGui::Render();
@@ -124,6 +114,22 @@ void Window::logInWindow(
   if (ImGui::Button("Login")) {
     onLogIn(SendAuth(_login, _password));
     _isLoggedIn = true;
+  }
+}
+
+void Window::chatWindow(
+    std::function<void(const std::string &login)> onSendSay) {
+  ImGui::Text("Chat here:");
+  ImGui::SameLine();
+  ImGui::Text("%s", _messages.c_str());
+  if (ImGui::InputTextMultiline("###text", _chatInput, IM_ARRAYSIZE(_chatInput),
+                                ImVec2(760, 40),
+                                ImGuiInputTextFlags_EnterReturnsTrue |
+                                    ImGuiInputTextFlags_CtrlEnterForNewLine)) {
+
+    onSendSay(SendSay(std::string(_chatInput)));
+    memset(_chatInput, 0, sizeof(_chatInput));
+    ImGui::SetKeyboardFocusHere(-1);
   }
 }
 

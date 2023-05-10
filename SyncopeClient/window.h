@@ -18,11 +18,12 @@ class Window {
 public:
   Window();
   GLFWwindow *Init();
-  void Loop(std::function<void(const std::string &message)> onMessageSend);
+  void Loop(std::function<void(const std::string &message)> onPostMessage);
   void AddMessage(const std::string &message);
 
 private:
   void logInWindow(std::function<void(const std::string &login)> onLogIn);
+  void chatWindow(std::function<void(const std::string &login)> onSendSay);
 
 public:
 private:
@@ -31,6 +32,7 @@ private:
   bool _isLoggedIn = false;
   char _login[32] = {};
   char _password[32] = {};
+  char _chatInput[256] = {};
 };
 
 } // namespace Syncopy
