@@ -13,4 +13,4 @@
 - Сервер парсит сообщение, декодирует, кодирует снова и отправляет всем клиентам SHOUT с сообщением
 - Клиенты парсят и декодируют сообщение
 
-![chat_protocol_uml_diagram](https://github.com/ash4rk/syncope-messenger/assets/30512240/b993dc39-5f2b-424c-a0e0-1e4509dacc9b)
+![chat_protocol](https://github.com/ash4rk/syncope-messenger/assets/30512240/f8e856a2-ddb6-4722-b214-5141e0c2b0d1)
