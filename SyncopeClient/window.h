@@ -26,10 +26,12 @@ private:
   void chatWindow(std::function<void(const std::string &login)> onSendSay);
 
 public:
+  bool isLoggedIn = false;
+  std::string loginErrorText = "";
+
 private:
   GLFWwindow *_window;
   std::string _messages = "";
-  bool _isLoggedIn = false;
   char _login[32] = {};
   char _password[32] = {};
   char _chatInput[256] = {};

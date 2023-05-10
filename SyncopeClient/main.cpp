@@ -27,14 +27,32 @@ int main() {
 
   client.OnMessage = [&window](const std::string &message) {
     std::cout << "OnMessage" << message;
-    ShoutMessage shoutMessage = ParseShout(message);
-    window.AddMessage(shoutMessage.username + ": " + shoutMessage.body + "\n");
+    switch (Syncopy::GetCommandName(message)) {
+    case (Syncopy::Command::SHOUT): {
+      ShoutMessage shoutMessage = ParseShout(message);
+      window.AddMessage(shoutMessage.username + ": " + shoutMessage.body + "\n");
+      break;
+    }
+    case (Syncopy::Command::WHISPER): {
+      WhisperMessage whisperMessage = ParseWhisper(message);
+      if (whisperMessage.result == "SUCCESS") {
+        window.isLoggedIn = true;
+      } else {
+        window.loginErrorText = whisperMessage.body;
+      }
+
+      std::cout << "Get whisper message. result is:" << whisperMessage.result << " body is:" << whisperMessage.body << "\n";
+      break;
+    }
+    default:
+      break;
+    }
   };
 
   std::thread t{[&client]() { client.Run(); }};
 
-   window.Init();
-   window.Loop([&client](const std::string &message) { client.Post(message); });
+  window.Init();
+  window.Loop([&client](const std::string &message) { client.Post(message); });
 
   // Terminate client
   client.Stop();

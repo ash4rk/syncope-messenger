@@ -31,6 +31,10 @@ const std::string SendShout(const std::string &username, std::string body) {
   return "SHOUT " + username + ":" + base64EncodedBody + "\n";
 }
 
+const std::string SendWhisper(const std::string &result, std::string body) {
+  return "WHISPER " + result + ":" + body + "\n";
+}
+
 const Command GetCommandName(const std::string message) {
   std::istringstream iss(message);
   std::string command;
@@ -96,11 +100,32 @@ const ShoutMessage ParseShout(const std::string message) {
   return shoutMessage;
 }
 
+const WhisperMessage ParseWhisper(const std::string message) {
+
+  std::istringstream iss(message);
+  std::string command;
+  std::string result;
+  std::string body;
+  getline(iss, command, ' ');
+  getline(iss, result, ':');
+  getline(iss, body, '\n');
+  std::cout << "Result: " << result << std::endl;
+  std::cout << "Body: " << body << std::endl;
+  WhisperMessage whisperMessage;
+  whisperMessage.result = result;
+  whisperMessage.body = body;
+  return whisperMessage;
+}
+
 Command _hashit(const std::string &inString) {
   if (inString == "AUTH")
     return AUTH;
   if (inString == "SAY")
     return SAY;
+  if (inString == "SHOUT")
+    return SHOUT;
+  if (inString == "WHISPER")
+    return WHISPER;
   return BAD_PATH;
 }
 } // namespace Syncopy

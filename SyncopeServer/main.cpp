@@ -32,10 +32,12 @@ int main() {
       Syncopy::AuthMessage credentials = Syncopy::ParseAuth(message);
       if (credentials.login == "admin" && credentials.password == "admin") {
         std::cout << "Successful authorization" << std::endl;
+        server.SendDirect(client, Syncopy::SendWhisper("SUCCESS", ""));
         client->SetAuth(true);
       }
       else {
         std::cout << "WRONG CREDENTIALS!" << std::endl;
+        server.SendDirect(client, Syncopy::SendWhisper("ERROR", "Invalid user name or password "));
       }
       break;
     }

@@ -27,6 +27,10 @@ void TCPServer::Broadcast(const std::string &message) {
   }
 }
 
+void TCPServer::SendDirect(const TCPConnection::pointer &connection, const std::string &message) {
+  connection->Post(message); 
+}
+
 void TCPServer::AuthorizeClient(std::string &login, std::string &pass) {}
 
 void TCPServer::startAccept() {

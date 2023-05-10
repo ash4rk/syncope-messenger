@@ -20,6 +20,7 @@ public:
 
   int Run();
   void Broadcast(const std::string &message);
+  void SendDirect(const TCPConnection::pointer &connection, const std::string &message);
   void AuthorizeClient(std::string &login, std::string &password);
 
 private:

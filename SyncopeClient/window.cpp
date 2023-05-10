@@ -74,7 +74,7 @@ void Window::Loop(
     ImGui::ShowDemoWindow();
 
     // Build New Windows Here
-    if (!_isLoggedIn) {
+    if (!isLoggedIn) {
       logInWindow(onPostMessage);
 
     } else {
@@ -117,8 +117,8 @@ void Window::logInWindow(
                        ImGuiInputTextFlags_CharsNoBlank);
   if (ImGui::Button("Login")) {
     onLogIn(SendAuth(_login, _password));
-    _isLoggedIn = true;
   }
+  ImGui::Text("%s", loginErrorText.c_str());
 }
 
 void Window::chatWindow(
