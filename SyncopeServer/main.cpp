@@ -29,16 +29,12 @@ int main() {
     switch (Syncopy::GetCommandName(message)) {
     case Syncopy::Command::AUTH: {
       std::cout << "Authorization attempt: " << std::endl;
-      std::string login;
-      std::string password;
-      getline(iss >> std::ws, login, ':');
-      getline(iss >> std::ws, password, ':');
-      // AUTH here
-      std::cout << "login:" << login << " password:" << password << std::endl;
-      if (login == "admin" && password == "admin") {
+      Syncopy::AuthMessage credentials = Syncopy::ParseAuth(message);
+      if (credentials.login == "admin" && credentials.password == "admin") {
         std::cout << "Successful authorization" << std::endl;
         client->SetAuth(true);
-      } else {
+      }
+      else {
         std::cout << "WRONG CREDENTIALS!" << std::endl;
       }
       break;

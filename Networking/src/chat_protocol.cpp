@@ -22,7 +22,20 @@ Command GetCommandName(std::string message) {
   std::cout << "Command is: " << command << std::endl;
   return _hashit(command);
 }
-AuthMessage ParseAuth(std::string message) { return AuthMessage(); }
+AuthMessage ParseAuth(std::string message) {
+  AuthMessage credentials;
+  std::istringstream iss(message);
+  std::string command;
+  std::string login;
+  std::string password;
+  getline(iss, login, ':');
+  getline(iss, password, '\n');
+  std::cout << "Login is: " << login << std::endl;
+  std::cout << "Password is: " << password << std::endl;
+  credentials.login = login;
+  credentials.password = password;
+  return credentials;
+    }
 SayMessage ParseSay(std::string message) { return SayMessage(); }
 
 Command _hashit(const std::string &inString) {
