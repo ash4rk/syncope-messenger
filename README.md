@@ -31,7 +31,7 @@ git clone https://github.com/ash4rk/syncope-messenger.git app
 cd app
 mkdir build
 cd build
-conan install .. -s build_type=Release
+conan install .. -s build_type=Release -b
 cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 cmake --build .
 cd ..
