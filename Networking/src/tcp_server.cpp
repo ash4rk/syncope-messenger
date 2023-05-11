@@ -49,11 +49,6 @@ void TCPServer::startAccept() {
         if (!error) {
           connection->Start(
               [this, connection](const std::string &message) {
-                // if (_authorized_connections.find(connection) ==
-                // _authorized_connections.end())
-                //   {
-                //     AuthorizeClient(std::string &login, std::string &pass)
-                //   }
                 if (OnClientMessage)
                   OnClientMessage(message, connection);
               },

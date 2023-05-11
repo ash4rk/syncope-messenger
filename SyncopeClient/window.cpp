@@ -100,8 +100,6 @@ void Window::Loop(
 
 void Window::AddMessage(const std::string &message) {
   _messages += message;
-  std::cout << "_messages " << _messages << "\n";
-  std::cout << "_message.c_str() " << _messages.c_str() << "\n";
 }
 
 void Window::logInWindow(

@@ -39,7 +39,6 @@ const Command GetCommandName(const std::string message) {
   std::istringstream iss(message);
   std::string command;
   getline(iss, command, ' ');
-  std::cout << "Command is: " << command << std::endl;
   return _hashit(command);
 }
 
@@ -52,8 +51,6 @@ const AuthMessage ParseAuth(const std::string message) {
   getline(iss, command, ' ');
   getline(iss, login, ':');
   getline(iss, password, '\n');
-  std::cout << "Login is: " << login << std::endl;
-  std::cout << "Password is: " << password << std::endl;
   credentials.login = login;
   credentials.password = password;
   return credentials;
@@ -109,8 +106,6 @@ const WhisperMessage ParseWhisper(const std::string message) {
   getline(iss, command, ' ');
   getline(iss, result, ':');
   getline(iss, body, '\n');
-  std::cout << "Result: " << result << std::endl;
-  std::cout << "Body: " << body << std::endl;
   WhisperMessage whisperMessage;
   whisperMessage.result = result;
   whisperMessage.body = body;
