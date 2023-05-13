@@ -10,9 +10,10 @@ file(GLOB SOURCES src/* src/*/* src/*/*/*)
 file(GLOB H_FILES "src/*.h")
 file(GLOB CPP_FILES "src/*.cpp")
 file(GLOB Networking "include/Networking/*.*")
+file(GLOB Log "include/Log/*.*")
 file(GLOB INCLUDE "include/*.*/*.*/*.*")
 
-add_library(${PROJECT_NAME} ${H_FILES} ${CPP_FILES} ${Networking} ${INCLUDE} ${SOURCES})
+add_library(${PROJECT_NAME} ${H_FILES} ${CPP_FILES} ${Networking} ${Log} ${INCLUDE} ${SOURCES})
 
 target_include_directories(${PROJECT_NAME}
 	PUBLIC

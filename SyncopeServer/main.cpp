@@ -1,3 +1,4 @@
+#include "Log/log.h"
 #include "Networking/chat_protocol.h"
 #include "Networking/tcp_connection.h"
 #include <Networking/tcp_server.h>
@@ -7,6 +8,7 @@
 #include <ostream>
 
 int main() {
+  //Syncopy::Log::Init();
   std::cout << "Hello, World! I am server!" << std::endl;
 
   Syncopy::TCPServer server{Syncopy::IPV::V4, 6060};
