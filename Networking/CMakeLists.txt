@@ -25,9 +25,8 @@ target_include_directories(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME}
-#	PUBLIC
-#		spdlog::spdlog
+	PUBLIC
+		spdlog::spdlog
 	PRIVATE		
 		Boost::boost
-		spdlog::spdlog		
 )
