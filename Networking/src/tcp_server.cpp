@@ -12,7 +12,7 @@ TCPServer::TCPServer(IPV ipv, int port)
                 tcp::endpoint(ipv == IPV::V4 ? tcp::v4() : tcp::v6(), _port)) {}
 
 int TCPServer::Run() {
- SYNCOPE_TRACE("Run TCPServer...");
+  SYNCOPE_TRACE("Run TCPServer...");
   try {
     startAccept();
     _ioContext.run();
@@ -29,8 +29,9 @@ void TCPServer::Broadcast(const std::string &message) {
   }
 }
 
-void TCPServer::SendDirect(const TCPConnection::pointer &connection, const std::string &message) {
-  connection->Post(message); 
+void TCPServer::SendDirect(const TCPConnection::pointer &connection,
+                           const std::string &message) {
+  connection->Post(message);
 }
 
 void TCPServer::AuthorizeClient(std::string &login, std::string &pass) {}

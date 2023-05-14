@@ -13,14 +13,16 @@ enum class IPV { V4, V6 };
 class TCPServer {
   using OnJoinHandler = std::function<void(TCPConnection::pointer)>;
   using OnLeaveHandler = std::function<void(TCPConnection::pointer)>;
-  using OnClientMessageHandler = std::function<void(std::string, TCPConnection::pointer)>;
+  using OnClientMessageHandler =
+      std::function<void(std::string, TCPConnection::pointer)>;
 
 public:
   TCPServer(IPV ipv, int port);
 
   int Run();
   void Broadcast(const std::string &message);
-  void SendDirect(const TCPConnection::pointer &connection, const std::string &message);
+  void SendDirect(const TCPConnection::pointer &connection,
+                  const std::string &message);
   void AuthorizeClient(std::string &login, std::string &password);
 
 private:

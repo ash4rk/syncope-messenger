@@ -52,10 +52,10 @@ void TCPConnection::onRead(boost::system::error_code ec,
     return;
   }
 
-
   // Extract up to the first delimiter.
-  std::string message{
-    boost::asio::buffers_begin(_streamBuf.data()), boost::asio::buffers_begin(_streamBuf.data()) + bytesTransferred - delimeter.size()};
+  std::string message{boost::asio::buffers_begin(_streamBuf.data()),
+                      boost::asio::buffers_begin(_streamBuf.data()) +
+                          bytesTransferred - delimeter.size()};
   // Consume through the first delimiter.
   _streamBuf.consume(bytesTransferred);
   _messageHandler(message);

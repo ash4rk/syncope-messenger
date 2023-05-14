@@ -4,6 +4,7 @@
 #include "bindings/imgui_impl_glfw.h"
 #include "bindings/imgui_impl_opengl3.h"
 #include "window.h"
+#include <Log/log.h>
 #include <boost/asio.hpp>
 #include <boost/asio/io_context.hpp>
 #include <exception>
@@ -11,7 +12,6 @@
 #include <ostream>
 #include <string>
 #include <thread>
-#include <Log/log.h>
 
 // Initialize with glewInit()
 #include <GL/glew.h>
@@ -32,7 +32,8 @@ int main() {
     switch (Syncopy::GetCommandName(message)) {
     case (Syncopy::Command::SHOUT): {
       ShoutMessage shoutMessage = ParseShout(message);
-      window.AddMessage(shoutMessage.username + ": " + shoutMessage.body + "\n");
+      window.AddMessage(shoutMessage.username + ": " + shoutMessage.body +
+                        "\n");
       break;
     }
     case (Syncopy::Command::WHISPER): {

@@ -98,9 +98,7 @@ void Window::Loop(
   glfwTerminate();
 }
 
-void Window::AddMessage(const std::string &message) {
-  _messages += message;
-}
+void Window::AddMessage(const std::string &message) { _messages += message; }
 
 void Window::logInWindow(
     std::function<void(const std::string &password)> onLogIn) {

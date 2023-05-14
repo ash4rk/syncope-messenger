@@ -32,9 +32,10 @@ int main() {
       if (credentials.login == "admin" && credentials.password == "admin") {
         server.SendDirect(client, Syncopy::SendWhisper("SUCCESS", ""));
         client->SetAuth(true);
-      }
-      else {
-        server.SendDirect(client, Syncopy::SendWhisper("ERROR", "Invalid user name or password "));
+      } else {
+        server.SendDirect(
+            client,
+            Syncopy::SendWhisper("ERROR", "Invalid user name or password "));
       }
       break;
     }
