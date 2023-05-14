@@ -11,6 +11,7 @@
 #include <ostream>
 #include <string>
 #include <thread>
+#include <Log/log.h>
 
 // Initialize with glewInit()
 #include <GL/glew.h>
@@ -21,6 +22,9 @@
 using namespace Syncopy;
 
 int main() {
+  Syncopy::Log::Init();
+  Syncopy::Log::GetLogger()->warn("This is my log from Client");
+
   Window window = Window();
 
   TCPClient client{"localhost", 6060};

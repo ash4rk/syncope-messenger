@@ -8,19 +8,16 @@
 #include <ostream>
 
 int main() {
-  //Syncopy::Log::Init();
-  std::cout << "Hello, World! I am server!" << std::endl;
+  Syncopy::Log::Init();
 
   Syncopy::TCPServer server{Syncopy::IPV::V4, 6060};
 
   server.OnJoin = [](Syncopy::TCPConnection::pointer server) {
-    std::cout << "User has joined the server: " << server->GetUsername()
-              << std::endl;
+    SYNCOPE_INFO("User {0} has joined the server", server->GetUsername());
   };
 
   server.OnLeave = [](Syncopy::TCPConnection::pointer server) {
-    std::cout << "User has left the server: " << server->GetUsername()
-              << std::endl;
+    SYNCOPE_INFO("User {0} has left the server", server->GetUsername());
   };
 
   server.OnClientMessage = [&server](const std::string &message,
@@ -30,7 +27,7 @@ int main() {
 
     switch (Syncopy::GetCommandName(message)) {
     case Syncopy::Command::AUTH: {
-      std::cout << "Authorization attempt: " << std::endl;
+      SYNCOPE_TRACE("Authorization attempt");
       Syncopy::AuthMessage credentials = Syncopy::ParseAuth(message);
       if (credentials.login == "admin" && credentials.password == "admin") {
         server.SendDirect(client, Syncopy::SendWhisper("SUCCESS", ""));
