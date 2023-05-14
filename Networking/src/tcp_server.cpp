@@ -1,4 +1,5 @@
 #include "Networking/tcp_server.h"
+#include "Log/log.h"
 #include <iostream>
 #include <unordered_set>
 #include <vector>
@@ -11,6 +12,7 @@ TCPServer::TCPServer(IPV ipv, int port)
                 tcp::endpoint(ipv == IPV::V4 ? tcp::v4() : tcp::v6(), _port)) {}
 
 int TCPServer::Run() {
+ SYNCOPE_TRACE("Run TCPServer...");
   try {
     startAccept();
     _ioContext.run();

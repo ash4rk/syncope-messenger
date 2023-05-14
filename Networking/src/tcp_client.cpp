@@ -1,4 +1,5 @@
 #include "Networking/tcp_client.h"
+#include "Log/log.h"
 #include <boost/asio/async_result.hpp>
 #include <boost/system/detail/error_code.hpp>
 #include <sstream>
@@ -11,9 +12,10 @@ namespace Syncopy {
     }
 
     void TCPClient::Run() {
+        SYNCOPE_TRACE("Run TCPClient...");
         io::async_connect(_socket, _endpoints, [this](boost::system::error_code ec, io::ip::tcp::endpoint ep) {
             if (!ec) asyncRead();
-            else std::cout << "Run Error " << ec << "! " << ec.message() << std::endl;
+            else SYNCOPE_ERROR("Run Error {0} {1}", ec.value(), ec.message());
         });
 
         _ioContext.run();
@@ -23,17 +25,17 @@ namespace Syncopy {
         boost::system::error_code ec;
         _socket.close(ec);
         if (ec) {
-          std::cout << "Stop Error " << ec << "! " << ec.message() << std::endl;
+          SYNCOPE_ERROR("Stop Error {0} {1}", ec.value(), ec.message());
         }
+        SYNCOPE_TRACE("TCPClient was stopped");
     }
 
     void TCPClient::Post(const std::string &message) {
-      std::cout << "Post func call. message is: "<< message << " type is " << typeid(message).name()  << std::endl;
+        SYNCOPE_TRACE("Post message:{0}", message);
         bool queueIdle = _outgoingMessages.empty();
         _outgoingMessages.push(message);
 
         if (queueIdle) {
-          std::cout << "!queueIdle" << std::endl;
           asyncWrite();
         }
     }
@@ -46,13 +48,14 @@ namespace Syncopy {
 
     void TCPClient::onRead(boost::system::error_code ec, size_t bytesTransferred) {
         if (ec) {
-            std::cout << "onRead Error " << ec << "! " << ec.message() << std::endl;
-            Stop();
-            return;
+          SYNCOPE_ERROR("onRead Error {0} {1}", ec.value(), ec.message());
+          Stop();
+          return;
         }
 
         std::stringstream message;
         message << std::istream{&_streamBuf}.rdbuf();
+        SYNCOPE_TRACE("Get message:{0}", message.str());
         OnMessage(message.str());
         asyncRead();
     }
@@ -65,16 +68,13 @@ namespace Syncopy {
 
     void TCPClient::onWrite(boost::system::error_code ec, size_t bytesTransferred) {
         if (ec) {
-            std::cout << "onWrite Error " << ec << "! " << ec.message() << std::endl;
-            Stop();
-            return;
+          SYNCOPE_ERROR("onWrite Error {0} {1}", ec.value(), ec.message());
+          Stop();
+          return;
         }
-        std::cout << "onWrite without errors. popping message: " << _outgoingMessages.front()  << std::endl;
-        std::cout << "bytesTransferred: "<< bytesTransferred << std::endl;
         _outgoingMessages.pop();
 
         if (!_outgoingMessages.empty()) {
-            std::cout << " _outgoingMessage not empty! " << std::endl;
             asyncWrite();
         }
     }

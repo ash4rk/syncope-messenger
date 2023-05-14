@@ -23,14 +23,12 @@ using namespace Syncopy;
 
 int main() {
   Syncopy::Log::Init();
-  Syncopy::Log::GetLogger()->warn("This is my log from Client");
 
   Window window = Window();
 
   TCPClient client{"localhost", 6060};
 
   client.OnMessage = [&window](const std::string &message) {
-    std::cout << "OnMessage" << message;
     switch (Syncopy::GetCommandName(message)) {
     case (Syncopy::Command::SHOUT): {
       ShoutMessage shoutMessage = ParseShout(message);
@@ -44,8 +42,6 @@ int main() {
       } else {
         window.loginErrorText = whisperMessage.body;
       }
-
-      std::cout << "Get whisper message. result is:" << whisperMessage.result << " body is:" << whisperMessage.body << "\n";
       break;
     }
     default:

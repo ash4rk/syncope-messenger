@@ -58,9 +58,6 @@ void TCPConnection::onRead(boost::system::error_code ec,
     boost::asio::buffers_begin(_streamBuf.data()), boost::asio::buffers_begin(_streamBuf.data()) + bytesTransferred - delimeter.size()};
   // Consume through the first delimiter.
   _streamBuf.consume(bytesTransferred);
-
-  std::cout << "OnRead() get message: " << message << std::endl;
-
   _messageHandler(message);
   asyncRead();
 }
