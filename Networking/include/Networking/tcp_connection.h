@@ -6,7 +6,7 @@
 #include <queue>
 #include <string>
 
-namespace Syncopy {
+namespace Syncope {
 static const std::string delimeter = "\n";
 
 using boost::asio::ip::tcp;
@@ -53,4 +53,4 @@ private:
   MessageHandler _messageHandler;
   ErrorHandler _errorHandler;
 };
-} // namespace Syncopy
+} // namespace Syncope

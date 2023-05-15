@@ -4,7 +4,7 @@
 #include <boost/asio.hpp>
 #include <queue>
 
-namespace Syncopy {
+namespace Syncope {
 namespace io = boost::asio;
 using MessageHandler = std::function<void(std::string)>;
 
@@ -34,4 +34,4 @@ private:
   io::streambuf _streamBuf{65536};
   std::queue<std::string> _outgoingMessages{};
 };
-} // namespace Syncopy
+} // namespace Syncope

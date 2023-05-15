@@ -5,7 +5,7 @@
 #include <iostream>
 #include <sstream>
 
-namespace Syncopy {
+namespace Syncope {
 TCPClient::TCPClient(const std::string &address, int port)
     : _socket(_ioContext) {
   io::ip::tcp::resolver resolver{_ioContext};
@@ -87,4 +87,4 @@ void TCPClient::onWrite(boost::system::error_code ec, size_t bytesTransferred) {
     asyncWrite();
   }
 }
-} // namespace Syncopy
+} // namespace Syncope

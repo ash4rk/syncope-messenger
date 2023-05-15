@@ -3,7 +3,7 @@
 #include "spdlog/spdlog.h"
 #include <memory>
 
-namespace Syncopy {
+namespace Syncope {
 
 class Log {
 public:
@@ -13,11 +13,11 @@ public:
 private:
   static std::shared_ptr<spdlog::logger> _logger;
 };
-} // namespace Syncopy
+} // namespace Syncope
 
 // Log macros
-#define SYNCOPE_TRACE(...)  ::Syncopy::Log::GetLogger()->trace(__VA_ARGS__)
-#define SYNCOPE_INFO(...)   ::Syncopy::Log::GetLogger()->info(__VA_ARGS__)
-#define SYNCOPE_WARN(...)   ::Syncopy::Log::GetLogger()->warn(__VA_ARGS__)
-#define SYNCOPE_ERROR(...)  ::Syncopy::Log::GetLogger()->error(__VA_ARGS__)
-#define SYNCOPE_FATAL(...)  ::Syncopy::Log::GetLogger()->fatal(__VA_ARGS__)
+#define SYNCOPE_TRACE(...)  ::Syncope::Log::GetLogger()->trace(__VA_ARGS__)
+#define SYNCOPE_INFO(...)   ::Syncope::Log::GetLogger()->info(__VA_ARGS__)
+#define SYNCOPE_WARN(...)   ::Syncope::Log::GetLogger()->warn(__VA_ARGS__)
+#define SYNCOPE_ERROR(...)  ::Syncope::Log::GetLogger()->error(__VA_ARGS__)
+#define SYNCOPE_FATAL(...)  ::Syncope::Log::GetLogger()->fatal(__VA_ARGS__)

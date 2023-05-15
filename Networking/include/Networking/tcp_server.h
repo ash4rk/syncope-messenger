@@ -6,7 +6,7 @@
 #include <unordered_set>
 #include <vector>
 
-namespace Syncopy {
+namespace Syncope {
 namespace io = boost::asio;
 enum class IPV { V4, V6 };
 
@@ -42,4 +42,4 @@ private:
   std::optional<io::ip::tcp::socket> _socket;
   std::unordered_set<TCPConnection::pointer> _connections{};
 };
-} // namespace Syncopy
+} // namespace Syncope

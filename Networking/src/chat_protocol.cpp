@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 
-namespace Syncopy {
+namespace Syncope {
 
 const std::string SendAuth(const std::string &login,
                            const std::string &password) {
@@ -123,4 +123,4 @@ Command _hashit(const std::string &inString) {
     return WHISPER;
   return BAD_PATH;
 }
-} // namespace Syncopy
+} // namespace Syncope

@@ -1,4 +1,3 @@
-#include <imgui.h>
 #include "Networking/chat_protocol.h"
 #include "Networking/tcp_client.h"
 #include "bindings/imgui_impl_glfw.h"
@@ -8,6 +7,7 @@
 #include <boost/asio.hpp>
 #include <boost/asio/io_context.hpp>
 #include <exception>
+#include <imgui.h>
 #include <iostream>
 #include <ostream>
 #include <string>
@@ -19,24 +19,24 @@
 // Include glfw3.h after our OpenGL definitions
 #include <GLFW/glfw3.h>
 
-using namespace Syncopy;
+using namespace Syncope;
 
 int main() {
-  Syncopy::Log::Init();
+  Log::Init();
 
   Window window = Window();
 
   TCPClient client{"localhost", 6060};
 
   client.OnMessage = [&window](const std::string &message) {
-    switch (Syncopy::GetCommandName(message)) {
-    case (Syncopy::Command::SHOUT): {
+    switch (GetCommandName(message)) {
+    case (Command::SHOUT): {
       ShoutMessage shoutMessage = ParseShout(message);
       window.AddMessage(shoutMessage.username + ": " + shoutMessage.body +
                         "\n");
       break;
     }
-    case (Syncopy::Command::WHISPER): {
+    case (Command::WHISPER): {
       WhisperMessage whisperMessage = ParseWhisper(message);
       if (whisperMessage.result == "SUCCESS") {
         window.isLoggedIn = true;

@@ -6,7 +6,7 @@
 #include <queue>
 #include <string>
 
-namespace Syncopy {
+namespace Syncope {
 
 enum Command { AUTH, SAY, WHISPER, SHOUT, BAD_PATH };
 
@@ -42,4 +42,4 @@ const WhisperMessage ParseWhisper(const std::string message);
 
 Command _hashit(std::string const &inString);
 
-} // namespace Syncopy
+} // namespace Syncope

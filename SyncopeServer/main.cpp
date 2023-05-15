@@ -7,47 +7,47 @@
 #include <iostream>
 #include <ostream>
 
+using namespace Syncope;
+
 int main() {
-  Syncopy::Log::Init();
+  Syncope::Log::Init();
 
-  Syncopy::TCPServer server{Syncopy::IPV::V4, 6060};
+  Syncope::TCPServer server{Syncope::IPV::V4, 6060};
 
-  server.OnJoin = [](Syncopy::TCPConnection::pointer server) {
+  server.OnJoin = [](Syncope::TCPConnection::pointer server) {
     SYNCOPE_INFO("User {0} has joined the server", server->GetUsername());
   };
 
-  server.OnLeave = [](Syncopy::TCPConnection::pointer server) {
+  server.OnLeave = [](Syncope::TCPConnection::pointer server) {
     SYNCOPE_INFO("User {0} has left the server", server->GetUsername());
   };
 
   server.OnClientMessage = [&server](const std::string &message,
-                                     Syncopy::TCPConnection::pointer client) {
+                                     TCPConnection::pointer client) {
     // Parse the message
     std::istringstream iss(message);
 
-    switch (Syncopy::GetCommandName(message)) {
-    case Syncopy::Command::AUTH: {
+    switch (GetCommandName(message)) {
+    case Command::AUTH: {
       SYNCOPE_TRACE("Authorization attempt");
-      Syncopy::AuthMessage credentials = Syncopy::ParseAuth(message);
+      AuthMessage credentials = ParseAuth(message);
       if (credentials.login == "admin" && credentials.password == "admin") {
-        server.SendDirect(client, Syncopy::SendWhisper("SUCCESS", ""));
+        server.SendDirect(client, Syncope::SendWhisper("SUCCESS", ""));
         client->SetAuth(true);
       } else {
         server.SendDirect(
-            client,
-            Syncopy::SendWhisper("ERROR", "Invalid user name or password "));
+            client, SendWhisper("ERROR", "Invalid user name or password "));
       }
       break;
     }
-    case Syncopy::Command::SAY: {
+    case Command::SAY: {
       // Check if Authorized if not return
       if (!client->IsAuth()) {
         return;
       }
-      Syncopy::SayMessage sayMessage = Syncopy::ParseSay(message);
+      SayMessage sayMessage = Syncope::ParseSay(message);
       // Send message to clients
-      server.Broadcast(
-          Syncopy::SendShout(client->GetUsername(), sayMessage.body));
+      server.Broadcast(SendShout(client->GetUsername(), sayMessage.body));
       break;
     }
     default: {

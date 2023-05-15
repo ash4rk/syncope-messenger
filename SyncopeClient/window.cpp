@@ -2,7 +2,7 @@
 #include "Networking/chat_protocol.h"
 #include <iostream>
 
-namespace Syncopy {
+namespace Syncope {
 
 Window::Window(){};
 
@@ -133,4 +133,4 @@ void Window::chatWindow(
   }
 }
 
-} // namespace Syncopy
+} // namespace Syncope

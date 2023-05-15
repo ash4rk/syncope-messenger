@@ -8,7 +8,7 @@
 #include <sstream>
 #include <string>
 
-namespace Syncopy {
+namespace Syncope {
 
 TCPConnection::TCPConnection(io::ip::tcp::socket &&socket)
     : _socket(std::move(socket)) {
@@ -84,4 +84,4 @@ void TCPConnection::onWrite(boost::system::error_code ec,
     asyncWrite();
   }
 }
-} // namespace Syncopy
+} // namespace Syncope

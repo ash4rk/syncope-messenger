@@ -4,7 +4,7 @@
 #include <unordered_set>
 #include <vector>
 
-namespace Syncopy {
+namespace Syncope {
 using boost::asio::ip::tcp;
 TCPServer::TCPServer(IPV ipv, int port)
     : _ipVersion(ipv), _port(port),
@@ -67,4 +67,4 @@ void TCPServer::startAccept() {
         startAccept();
       });
 }
-} // namespace Syncopy
+} // namespace Syncope

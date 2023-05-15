@@ -12,7 +12,7 @@
 // Include glfw3.h after our OpenGL definitions
 #include <GLFW/glfw3.h>
 
-namespace Syncopy {
+namespace Syncope {
 
 class Window {
 public:
@@ -37,4 +37,4 @@ private:
   char _chatInput[256] = {};
 };
 
-} // namespace Syncopy
+} // namespace Syncope
