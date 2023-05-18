@@ -1,3 +1,4 @@
+#include <imgui.h>
 #include "Networking/chat_protocol.h"
 #include "Networking/tcp_client.h"
 #include "bindings/imgui_impl_glfw.h"
@@ -7,7 +8,6 @@
 #include <boost/asio.hpp>
 #include <boost/asio/io_context.hpp>
 #include <exception>
-#include <imgui.h>
 #include <iostream>
 #include <ostream>
 #include <string>
@@ -30,21 +30,12 @@ int main() {
 
   client.OnMessage = [&window](const std::string &message) {
     switch (GetCommandName(message)) {
-    case (Command::SHOUT): {
-      ShoutMessage shoutMessage = ParseShout(message);
-      window.AddMessage(shoutMessage.username + ": " + shoutMessage.body +
-                        "\n");
+    case (Command::SHOUT):
+      window.HandleShoutMessage(message);
       break;
-    }
-    case (Command::WHISPER): {
-      WhisperMessage whisperMessage = ParseWhisper(message);
-      if (whisperMessage.result == "SUCCESS") {
-        window.isLoggedIn = true;
-      } else {
-        window.loginErrorText = whisperMessage.body;
-      }
+    case (Command::WHISPER):
+      window.HandleWhisperMessage(message);
       break;
-    }
     default:
       break;
     }

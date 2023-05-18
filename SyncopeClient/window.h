@@ -19,11 +19,13 @@ public:
   Window();
   GLFWwindow *Init();
   void Loop(std::function<void(const std::string &message)> onPostMessage);
-  void AddMessage(const std::string &message);
+  void HandleShoutMessage(std::string message);
+  void HandleWhisperMessage(std::string message);
 
 private:
   void logInWindow(std::function<void(const std::string &login)> onLogIn);
   void chatWindow(std::function<void(const std::string &login)> onSendSay);
+  void addMessage(const std::string &message);
 
 public:
   bool isLoggedIn = false;

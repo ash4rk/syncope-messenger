@@ -98,7 +98,21 @@ void Window::Loop(
   glfwTerminate();
 }
 
-void Window::AddMessage(const std::string &message) { _messages += message; }
+void Window::HandleShoutMessage(std::string message) {
+  Syncope::ShoutMessage shoutMessage = Syncope::ParseShout(message);
+  addMessage(shoutMessage.username + ": " + shoutMessage.body + "\n");
+}
+
+void Window::HandleWhisperMessage(std::string message) {
+  Syncope::WhisperMessage whisperMessage = Syncope::ParseWhisper(message);
+  if (whisperMessage.result == "SUCCESS") {
+    isLoggedIn = true;
+  } else {
+    loginErrorText = whisperMessage.body;
+  }
+}
+
+void Window::addMessage(const std::string &message) { _messages += message; }
 
 void Window::logInWindow(
     std::function<void(const std::string &password)> onLogIn) {
