@@ -51,9 +51,11 @@ build/SyncopeClient/SyncopeClient
 
 ## Диаграммы классов:
 
-![tcp_connection_uml](https://github.com/ash4rk/syncope-messenger/assets/30512240/4a626019-2544-40c4-83c4-c7069281bacd)
-![tcp_client_uml](https://github.com/ash4rk/syncope-messenger/assets/30512240/6c005301-1364-443e-b34f-b3416115a6ce)
-![tcp_server_uml](https://github.com/ash4rk/syncope-messenger/assets/30512240/9b0f5053-49eb-4010-8f9e-2809c69828d2)
+<p align="center">
+<img src="https://github.com/ash4rk/syncope-messenger/assets/30512240/6c005301-1364-443e-b34f-b3416115a6ce" alt="tcp_client_uml" width=390 />
+<img src="https://github.com/ash4rk/syncope-messenger/assets/30512240/9b0f5053-49eb-4010-8f9e-2809c69828d2" alt="tcp_server_uml" width=430 />
+<img src="https://github.com/ash4rk/syncope-messenger/assets/30512240/4a626019-2544-40c4-83c4-c7069281bacd" alt="tcp_connection_uml" width=500 />
+</p>
 
 ## Необходимые пакеты
 - [cmake](https://cmake.org/)
